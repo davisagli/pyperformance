@@ -1,0 +1,32 @@
+name: Run benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      # branch:
+      #   type: string
+      #   required: true
+      benchmark:
+        type: string
+        required: true
+
+jobs:
+  run_benchmark:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out pyperformance
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Build image
+      uses: docker/build-push-action@v4
+      with:
+        tags: pyperf:latest
+        push: false
+    - name: Run benchmark
+      uses: addnab/docker-run-action@v3
+      with:
+        image: pyperf:latest
+        run: work/venv/bin/python pyperformance/pyperformance/data-files/benchmarks/bm_pickle/run_benchmark.py ${{ inputs.benchmark }} --python work/venv/bin/python --compare-to base/venv/bin/python
