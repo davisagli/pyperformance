@@ -1,0 +1,8 @@
+[submodule "base"]
+	path = base
+	url = https://github.com/davisagli/cpython.git
+	branch = main
+[submodule "work"]
+	path = work
+	url = https://github.com/davisagli/cpython.git
+	branch = unpickle-opt
