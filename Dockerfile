@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ubuntu:latest AS base
+FROM ubuntu:latest
 
 # Build dependencies
 RUN <<EOT
@@ -12,12 +12,11 @@ EOT
 COPY . .
 
 # build CPython main
-FROM base as main
 RUN <<EOT
     cd base
     make clean
     ./configure --enable-optimizations
-    make profile-opt -j
+    make profile-opt
     ./python -m ensurepip
     ./python -m venv venv
     venv/bin/pip install pyperf
@@ -25,18 +24,13 @@ RUN <<EOT
 EOT
 
 # build CPython branch
-FROM base as branch
 RUN <<EOT
     cd work
     make clean
     ./configure --enable-optimizations
-    make profile-opt -j
+    make profile-opt
     ./python -m ensurepip
     ./python -m venv venv
     venv/bin/pip install pyperf
     cd ..
 EOT
-
-# Combined image
-FROM main as final
-COPY --from=branch work work

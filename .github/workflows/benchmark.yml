@@ -29,4 +29,4 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: pyperf:latest
-        run: work/venv/bin/python pyperformance/pyperformance/data-files/benchmarks/bm_pickle/run_benchmark.py ${{ inputs.benchmark }} --python work/venv/bin/python --compare-to base/venv/bin/python
+        run: work/venv/bin/python pyperformance/data-files/benchmarks/bm_pickle/run_benchmark.py ${{ inputs.benchmark }} --python work/venv/bin/python --compare-to base/venv/bin/python
